@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/main.dart';
+import 'package:ecommerce_app/src/pages/Core/CartPage.dart';
 import 'package:ecommerce_app/src/pages/Core/FruitsPage.dart';
 import 'package:ecommerce_app/src/pages/Core/LegumesPage.dart';
 import 'package:ecommerce_app/src/pages/Core/ViandePage.dart';
@@ -18,9 +19,12 @@ class _CategorySelectionState extends State<CategorySelection> {
         leading: Icon(Icons.menu),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.shopping_basket),
-          )
+            onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartPage()));},
+            icon: Icon(
+             Icons.shopping_basket
+            
+           
+          ))
         ],
         centerTitle: true,
         title: Text("Menu"),
