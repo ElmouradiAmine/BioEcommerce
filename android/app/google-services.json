@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "549695014837",
+    "firebase_url": "https://bio-ecommerce.firebaseio.com",
+    "project_id": "bio-ecommerce",
+    "storage_bucket": "bio-ecommerce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549695014837:android:201a0dbdc366556f9dfbfc",
+        "android_client_info": {
+          "package_name": "ma.itwins.ecommerce_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549695014837-b1tvnb1j6macheh2tglodmauqic6jvcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArqDxZ5Du6nPIdvPzLe-qK1PTna7E62ao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549695014837-b1tvnb1j6macheh2tglodmauqic6jvcu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,17 +1,19 @@
 import 'package:ecommerce_app/main.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/src/pages/Authentification/AuthSelectionPage.dart';
 import 'package:ecommerce_app/src/pages/Core/CategorySelection.dart';
 import 'package:flutter/material.dart';
 
-class LogInPage extends StatefulWidget {
+import 'AuthSelectionPage.dart';
+
+class RegisterPage extends StatefulWidget {
   @override
-  _LogInPageState createState() => _LogInPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LogInPageState extends State<LogInPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
+  String name = '';
   String password = '';
 
   final AuthService _auth = AuthService();
@@ -29,7 +31,7 @@ class _LogInPageState extends State<LogInPage> {
         backgroundColor: Colors.green,
         centerTitle: true,
         title: Text(
-          "S'identifier",
+          "S'inscrire",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -37,6 +39,7 @@ class _LogInPageState extends State<LogInPage> {
       ),
       body: Stack(
         children: <Widget>[
+          
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -45,15 +48,35 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                   fit: BoxFit.cover),
             ),
-            child: ListView(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                Form(
-                  key: _formKey,
-                  child: Column(
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 15),
+                        child: TextFormField(
+                          onChanged: (val) {
+                            name = val;
+                          },
+                          /*validator: (val) =>
+                              RegExp(r"^[a-zA ]*$")
+                                      .hasMatch(val)
+                                  ? null
+                                  : "Veuillez saisir un nom valide.",*/
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              prefixIcon: Icon(Icons.person),
+                              hintText: 'Nom'),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
@@ -86,7 +109,6 @@ class _LogInPageState extends State<LogInPage> {
                               ? null
                               : "Veuillez saisir un mot de passe plus long (6 caractères minimum).",
                           decoration: InputDecoration(
-                            
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -96,47 +118,45 @@ class _LogInPageState extends State<LogInPage> {
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 60,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Padding(
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 24),
                         child: RaisedButton(
                           color: Colors.orange,
                           padding: EdgeInsets.all(16.0),
-                          onPressed:_login,
+                          onPressed: _register,
                           child: Text(
-                            "S'IDENTIFIER",
+                            "S'INSCRIRE",
                             style: TextStyle(
                               color: Colors.white,
                             ),
                           ),
-                        )),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Pas de compte ? "),
-                        Text(
-                          "S'inscrire",
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                )
-              ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Déjà inscrit ? "),
+                          Text(
+                            "S'identifier",
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           Visibility(
@@ -153,14 +173,14 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  _login() async {
-  FocusScope.of(context).unfocus();
-  if (_formKey.currentState.validate()) {
+  _register() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState.validate()) {
       setState(() {
         loading = true;
       });
       dynamic result =
-          await _auth.signInWithEmailAndPassword(email, password);
+          await _auth.registerWithEmailAndPassword(email, password,name);
       if (result == null) {
         setState(() {
         loading = false;
@@ -170,15 +190,6 @@ class _LogInPageState extends State<LogInPage> {
             builder: (context) {
               return AlertDialog(
                 content: Text("Une erreur a eu lieu."),
-                actions: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical:10, horizontal:20),
-                    color: Colors.green,
-                    child: Text("ok", style: TextStyle(
-                      color: Colors.white,
-
-                    ),),)
-                ],
               );
             });
       } else {
@@ -190,6 +201,8 @@ class _LogInPageState extends State<LogInPage> {
 
       
     }
+
+    print(name);
     print(email);
     print(password);
   }

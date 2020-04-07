@@ -1,26 +1,30 @@
 import 'package:ecommerce_app/src/widgets/products/productList.dart';
 import 'package:flutter/material.dart';
 
-class ViandePage extends StatefulWidget {
+class AutrePage extends StatefulWidget {
   @override
-  _ViandePageState createState() => _ViandePageState();
+  _AutrePageState createState() => _AutrePageState();
 }
 
-class _ViandePageState extends State<ViandePage> {
+class _AutrePageState extends State<AutrePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.shopping_basket))
+          IconButton(
+            onPressed: (){
+
+            },
+            icon:Icon(Icons.shopping_basket))
         ],
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.brown,
         leading: IconButton(
           onPressed: (){
             Navigator.of(context).pop();
           },
           icon:Icon(Icons.arrow_back)),
-        title: Text("Viandes"),
+        title: Text("Autres"),
         centerTitle: true,
       ),
       body: Stack(children: <Widget>[
@@ -33,9 +37,10 @@ class _ViandePageState extends State<ViandePage> {
                 fit: BoxFit.cover),
           ),
         ),
-        ProductList(category: "meat",)
+        ProductList(category: "other",)
       ]),
     );
   }
 
+  
 }

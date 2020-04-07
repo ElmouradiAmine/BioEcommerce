@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/src/pages/Authentification/LogInPage.dart';
-import 'package:ecommerce_app/src/pages/Authentification/SignInPage.dart';
+import 'package:ecommerce_app/src/pages/Authentification/RegisterPage.dart';
 import 'package:ecommerce_app/src/widgets/logoWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -45,69 +45,36 @@ class _AuthSelectionPageState extends State<AuthSelectionPage> {
                 ),
                 Column(
                   children: <Widget>[
-                    Text(
-                      "Continuer avec",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                      ),
-                    ),
+      
                     SizedBox(
                       height: 10,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: RaisedButton(
-                        color: Color(0xffdd4b39),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: 30,
-                                width: 30,
-                                child:
-                                    Image.asset("images/logos/googleLogo.png"),
+                          color: Color(0xffdd4b39),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:48.0, vertical: 12.0),
+                            child: Text(
+                              "S'INSCRIRE",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "GOOGLE",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => RegisterPage()));
+                          },
                         ),
-                        onPressed: () {},
-                      ),
                     ),
                   ],
                 ),
                 Column(
                   children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => SignInPage()));
-                      },
-                      child: Text(
-                        "S'INSCRIRE",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
+  
                     SizedBox(
                       height: 25,
                     ),
