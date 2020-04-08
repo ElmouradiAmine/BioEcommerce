@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String email = '';
   String name = '';
   String password = '';
+  String phone = '';
 
   final AuthService _auth = AuthService();
   bool loading = false;
@@ -64,11 +65,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           onChanged: (val) {
                             name = val;
                           },
-                          /*validator: (val) =>
-                              RegExp(r"^[a-zA ]*$")
-                                      .hasMatch(val)
+                          validator: (val) =>
+                              val == "" || val == null
                                   ? null
-                                  : "Veuillez saisir un nom valide.",*/
+                                  : "Veuillez saisir un nom valide.",
                           decoration: InputDecoration(
                               hintStyle: TextStyle(
                                 color: Colors.grey,
@@ -81,6 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
                         child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
                           onChanged: (val) {
                             email = val;
                           },
@@ -95,6 +96,27 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.grey,
                               ),
                               hintText: 'E-mail'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0, vertical: 15),
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          obscureText: true,
+                          onChanged: (val) {
+                            phone = val;
+                          },
+                          validator: (val) => (RegExp(r"^[0-9]")
+                                      .hasMatch(val) && val.length == 10)
+                              ? null
+                              : "Veuillez saisir un numéro de téléphone correcte.",
+                          decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              prefixIcon: Icon(Icons.phone),
+                              hintText: 'Téléphone'),
                         ),
                       ),
                       Padding(
@@ -116,6 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               hintText: 'Mot de passe'),
                         ),
                       ),
+                      
                     ],
                   ),
                   SizedBox(
@@ -180,7 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
         loading = true;
       });
       dynamic result =
-          await _auth.registerWithEmailAndPassword(email, password,name);
+          await _auth.registerWithEmailAndPassword(email, password,name,phone);
       if (result == null) {
         setState(() {
         loading = false;

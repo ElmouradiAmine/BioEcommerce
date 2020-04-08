@@ -9,17 +9,17 @@ class UserService {
   //collection reference
   final CollectionReference userCollection = Firestore.instance.collection('users');
 
-  Future updateUserData(String email, String name) async {
+  Future updateUserData(String email, String name, String phone) async {
     return await userCollection.document(uid).setData({
       "uid": uid,
       "email": email,
       "name": name,
+      "phone": phone,
     }); 
   }
 
   Stream<UserData> getUserData()  {
     return userCollection.document(uid).snapshots().map((document){
-      print("CHECK HERE" + document.data["email"]);
       return UserData(uid:uid, email: document.data["email"], name: document.data["name"]);
     });
   }

@@ -1,6 +1,4 @@
-import 'package:ecommerce_app/main.dart';
 import 'package:ecommerce_app/models/Product.dart';
-import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/models/userData.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/src/pages/Authentification/AuthSelectionPage.dart';
@@ -55,6 +53,8 @@ class _CategorySelectionState extends State<CategorySelection> {
                   Text(userData.name, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 5,),
                   Text(userData.email, style: TextStyle(color: Colors.white),),
+                  SizedBox(height: 5,),
+                  Text(userData.phone, style: TextStyle(color: Colors.white),),
                 ],
             ),
               )),
@@ -65,7 +65,11 @@ class _CategorySelectionState extends State<CategorySelection> {
 
             ),
             ListTile(
-              onTap: _signOut,
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                  CartPage();
+                }));
+              },
               leading: Icon(Icons.shopping_basket),
               title: Text("Mon Panier"),
               
