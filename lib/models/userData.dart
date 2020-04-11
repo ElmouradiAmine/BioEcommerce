@@ -3,8 +3,9 @@ class UserData {
   final String email;
   final String name;
   final String phone;
+  final String adress;
 
-  UserData({this.uid, this.email, this.name, this.phone});
+  UserData({this.uid, this.email, this.name, this.phone, this.adress});
 
 
   

@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/main.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/src/pages/Authentification/AuthSelectionPage.dart';
 import 'package:ecommerce_app/src/pages/Core/CategorySelection.dart';
@@ -18,34 +17,35 @@ class _LogInPageState extends State<LogInPage> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => AuthSelectionPage()));
-            },
-            icon: Icon(Icons.arrow_back)),
-        backgroundColor: Colors.green,
-        centerTitle: true,
-        title: Text(
-          "S'identifier",
-          style: TextStyle(
-            color: Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(
+                      "images/background/vegetablePattern.jpg",
+                    ),
+                    fit: BoxFit.cover),
+              ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => AuthSelectionPage()));
+              },
+              icon: Icon(Icons.arrow_back)),
+          backgroundColor: Colors.green,
+          centerTitle: true,
+          title: Text(
+            "S'identifier",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                    "images/background/vegetablePattern.jpg",
-                  ),
-                  fit: BoxFit.cover),
-            ),
-            child: ListView(
+        body: Stack(
+          children: <Widget>[
+            ListView(
               children: <Widget>[
                 SizedBox(
                   height: 20,
@@ -138,17 +138,17 @@ class _LogInPageState extends State<LogInPage> {
                 )
               ],
             ),
-          ),
-          Visibility(
-            visible: loading,
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.black.withOpacity(0.5),
-              child: Center(child: CircularProgressIndicator()),
+            Visibility(
+              visible: loading,
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.5),
+                child: Center(child: CircularProgressIndicator()),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -169,15 +169,17 @@ class _LogInPageState extends State<LogInPage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: Text("Une erreur a eu lieu."),
+                content: Text("Email ou mot de passe incorrecte."),
                 actions: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical:10, horizontal:20),
+                  FlatButton(
                     color: Colors.green,
-                    child: Text("ok", style: TextStyle(
+                    child: Text("Ok",style: TextStyle(
                       color: Colors.white,
 
-                    ),),)
+                    ),),
+                    onPressed: (){
+                    Navigator.of(context).pop();
+                  },)
                 ],
               );
             });
@@ -190,7 +192,7 @@ class _LogInPageState extends State<LogInPage> {
 
       
     }
-    print(email);
-    print(password);
+    //print(email);
+    //print(password);
   }
 }

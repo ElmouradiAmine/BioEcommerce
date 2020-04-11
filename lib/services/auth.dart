@@ -11,13 +11,18 @@ class AuthService {
 
   //create user object based on FirebaseUser
   User _userFromFirebaseUser(FirebaseUser user){
-    
     return user != null ? User(uid: user.uid) : null;
   }
 
   //auth change stream
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  }
+
+  updateUserEmail(String email){
+    _auth.currentUser().then((user){
+        user.updateEmail(email);
+    });
   }
 
   //sign in with email and password

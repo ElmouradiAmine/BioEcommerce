@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce_app/models/CartProduct.dart';
 import 'package:ecommerce_app/models/Product.dart';
-import 'package:ecommerce_app/src/widgets/cart/cartList.dart';
 
 class CartService {
   final String uid;
@@ -16,12 +15,11 @@ class CartService {
 
     if (doc.data["cart"] != null) {
       for (var element in doc.data["cart"]) {
-        
-        cartList.add({"id": element["id"], "qte": element["qte"] });
+        cartList.add({"id": element["id"], "qte": element["qte"]});
       }
     }
 
-    cartList.add({"id": product.id, "qte": 1 });
+    cartList.add({"id": product.id, "qte": 1});
     return await userCollection.document("$uid").updateData({
       "cart": cartList,
     });
@@ -34,9 +32,9 @@ class CartService {
     if (doc.data["cart"] != null) {
       for (var element in doc.data["cart"]) {
         if (element["id"] == product.id)
-          cartList.add({"id": element["id"], "qte": (element["qte"]+1) });
+          cartList.add({"id": element["id"], "qte": (element["qte"] + 1)});
         else {
-          cartList.add({"id": element["id"], "qte": (element["qte"]) });
+          cartList.add({"id": element["id"], "qte": (element["qte"])});
         }
       }
     }
@@ -44,16 +42,25 @@ class CartService {
       "cart": cartList,
     });
   }
+
+  Future clearCart() async {
+    DocumentSnapshot doc = await userCollection.document("$uid").get();
+    List<Map> cartList = [];
+    return await userCollection.document("$uid").updateData({
+      "cart": cartList,
+    });
+  }
+
   Future removeQte(Product product) async {
     DocumentSnapshot doc = await userCollection.document("$uid").get();
-    List<Map<String,Object>> cartList = [];
+    List<Map<String, Object>> cartList = [];
 
     if (doc.data["cart"] != null) {
       for (var element in doc.data["cart"]) {
         if (element["id"] == product.id)
-          cartList.add({"id": element["id"], "qte": (element["qte"]-1) });
+          cartList.add({"id": element["id"], "qte": (element["qte"] - 1)});
         else {
-          cartList.add({"id": element["id"], "qte": (element["qte"]) });
+          cartList.add({"id": element["id"], "qte": (element["qte"])});
         }
       }
     }
@@ -61,7 +68,6 @@ class CartService {
       "cart": cartList,
     });
   }
-
 
   Stream<List<CartProduct>> getCartProduct() {
     return userCollection.document(uid).snapshots().map((doc) {
@@ -75,16 +81,14 @@ class CartService {
     });
   }
 
-
   Future removeProduct(String id) async {
-  DocumentSnapshot doc = await userCollection.document("$uid").get();
+    DocumentSnapshot doc = await userCollection.document("$uid").get();
     List<Map> cartList = [];
 
     if (doc.data["cart"] != null) {
       for (var element in doc.data["cart"]) {
         if (element["id"] != id)
-          cartList.add({"id": element["id"], "qte": (element["qte"]) });
-        
+          cartList.add({"id": element["id"], "qte": (element["qte"])});
       }
     }
     return await userCollection.document("$uid").updateData({

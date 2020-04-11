@@ -2,6 +2,7 @@ import 'package:ecommerce_app/models/CartProduct.dart';
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/services/auth.dart';
 import 'package:ecommerce_app/services/cartService.dart';
+import 'package:ecommerce_app/services/orderService.dart';
 import 'package:ecommerce_app/services/productService.dart';
 import 'package:ecommerce_app/services/userService.dart';
 import 'package:ecommerce_app/src/pages/Core/CategorySelection.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/Product.dart';
+import 'models/order.dart';
 import 'models/userData.dart';
 
 void main() => runApp(App());
@@ -37,10 +39,13 @@ class MainApp extends StatelessWidget {
         value: UserService(uid: user == null ? "" : user.uid).getUserData(),
         child: StreamProvider<List<CartProduct>>.value(
                   value: CartService(uid: user == null ? "" : user.uid).getCartProduct(),
-                  child: MaterialApp(
+                  child: StreamProvider<List<Order>>.value(
+                    value: OrderService(uid: user == null ? "" : user.uid).getAllOrder(),
+                                      child: MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(accentColor: Colors.orange),
               home: Wrapper()),
+                  ),
         ));
   }
 }

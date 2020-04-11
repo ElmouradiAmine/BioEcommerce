@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'StepTwoPage.dart';
 
@@ -12,7 +14,6 @@ class StepOnePage extends StatefulWidget {
 class _StepOnePageState extends State<StepOnePage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     startTime();
   }
@@ -145,7 +146,8 @@ class _StepOnePageState extends State<StepOnePage> {
                             ),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          await _getCurrentLocation();
                           Navigator.of(context).pop();
                         },
                       ),
@@ -170,5 +172,13 @@ class _StepOnePageState extends State<StepOnePage> {
             ),
           );
         });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final position  = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('lat', position.latitude);
+    await prefs.setDouble('long', position.longitude);
   }
 }

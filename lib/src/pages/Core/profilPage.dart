@@ -1,47 +1,44 @@
-import 'package:ecommerce_app/main.dart';
+import 'package:ecommerce_app/models/userData.dart';
 import 'package:ecommerce_app/services/auth.dart';
-import 'package:ecommerce_app/src/pages/Core/CategorySelection.dart';
+import 'package:ecommerce_app/services/userService.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'AuthSelectionPage.dart';
-
-class RegisterPage extends StatefulWidget {
+class ProfilPage extends StatefulWidget {
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _ProfilPageState createState() => _ProfilPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _ProfilPageState extends State<ProfilPage> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String name = '';
-  String password = '';
   String phone = '';
+  String adress = '';
 
-  final AuthService _auth = AuthService();
   bool loading = false;
   @override
   Widget build(BuildContext context) {
+    UserData user = Provider.of<UserData>(context);
+    email = user.email;
+    name = user.name;
+    phone = user.phone;
+    adress = user.adress;
     return Container(
       decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                      "images/background/vegetablePattern.jpg",
-                    ),
-                    fit: BoxFit.cover),
-              ),
+        image: DecorationImage(
+            image: AssetImage(
+              "images/background/vegetablePattern.jpg",
+            ),
+            fit: BoxFit.fitHeight),
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => AuthSelectionPage()));
-              },
-              icon: Icon(Icons.arrow_back)),
           backgroundColor: Colors.green,
           centerTitle: true,
           title: Text(
-            "S'inscrire",
+            "Mon profil",
             style: TextStyle(
               color: Colors.white,
             ),
@@ -49,7 +46,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         body: Stack(
           children: <Widget>[
-            
             Form(
               key: _formKey,
               child: ListView(
@@ -63,6 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
                         child: TextFormField(
+                          initialValue: user.name,
                           onChanged: (val) {
                             name = val;
                           },
@@ -82,6 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
                         child: TextFormField(
+                          initialValue: user.email,
                           keyboardType: TextInputType.emailAddress,
                           onChanged: (val) {
                             email = val;
@@ -103,12 +101,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
                         child: TextFormField(
+                          initialValue: user.phone,
                           keyboardType: TextInputType.phone,
                           onChanged: (val) {
                             phone = val;
                           },
-                          validator: (val) => (RegExp(r"^[0-9]")
-                                      .hasMatch(val) && val.length == 10)
+                          validator: (val) => (RegExp(r"^[0-9]+$")
+                                      .hasMatch(val) &&
+                                  val.length == 10)
                               ? null
                               : "Veuillez saisir un numéro de téléphone correcte.",
                           decoration: InputDecoration(
@@ -123,22 +123,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24.0, vertical: 15),
                         child: TextFormField(
-                          obscureText: true,
+                          initialValue: user.adress,
                           onChanged: (val) {
-                            password = val;
+                            adress = val;
                           },
-                          validator: (val) => val.length >= 6
-                              ? null
-                              : "Veuillez saisir un mot de passe plus long (6 caractères minimum).",
                           decoration: InputDecoration(
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
-                              prefixIcon: Icon(Icons.lock),
-                              hintText: 'Mot de passe'),
+                              prefixIcon: Icon(Icons.map),
+                              hintText: 'Adresse'),
                         ),
                       ),
-                      
                     ],
                   ),
                   SizedBox(
@@ -153,28 +149,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: RaisedButton(
                           color: Colors.orange,
                           padding: EdgeInsets.all(16.0),
-                          onPressed: _register,
+                          onPressed: () {
+                            updateUserData(user.uid);
+                          },
                           child: Text(
-                            "S'INSCRIRE",
+                            "Mettre à jour",
                             style: TextStyle(
                               color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Déjà inscrit ? "),
-                          Text(
-                            "S'identifier",
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          )
-                        ],
                       ),
                     ],
                   )
@@ -196,18 +182,46 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  _register() async {
+  updateUserData(String uid) async {
     FocusScope.of(context).unfocus();
+    print(email);
+    print(name);
+    print(phone);
+    print(adress);
     if (_formKey.currentState.validate()) {
       setState(() {
         loading = true;
       });
-      dynamic result =
-          await _auth.registerWithEmailAndPassword(email, password,name,phone);
-      if (result == null) {
+
+      try {
+        await UserService(uid: uid)
+            .updateUserDataWithAdress(email, name, phone, adress);
+            AuthService().updateUserEmail(email);
         setState(() {
-        loading = false;
-      });
+          loading = false;
+        });
+        showDialog(
+          barrierDismissible: true,
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                
+                content: Text("Votre profil a été mise à jour avec succès."),
+                actions: <Widget>[
+                  FlatButton(
+                    color: Colors.green,
+                    child: Text("Ok", style: TextStyle(color: Colors.white),),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } catch (e) {
+        setState(() {
+          loading = false;
+        });
         showDialog(
             context: context,
             builder: (context) {
@@ -215,16 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 content: Text("Une erreur a eu lieu."),
               );
             });
-      } else {
-        setState(() {
-        loading = false;
-      });
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => CategorySelection()));
       }
-
-      
     }
-
-
   }
 }

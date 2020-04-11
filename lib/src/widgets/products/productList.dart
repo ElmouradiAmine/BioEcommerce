@@ -9,7 +9,7 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Product> products = Provider.of<List<Product>>(context).where((product) => 
+    List<Product> products = (Provider.of<List<Product>>(context) ?? []).where((product) => 
       product.category == category
     ).toList();
     products.sort((a,b) => a.name.compareTo(b.name));

@@ -12,7 +12,6 @@ class CartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
     List<CartProduct> cartProducts = Provider.of<List<CartProduct>>(context);
   
     List<Product> products = Provider.of<List<Product>>(context).where((product){
@@ -26,9 +25,6 @@ class CartList extends StatelessWidget {
     List<CartTile> listCartTile = cartProducts.map((cartProduct){
       return  CartTile(product: products.singleWhere((p) => p.id == cartProduct.idProd), qte: cartProduct.qte);
     }).toList();
-
-
-  
     return ListView(children: 
       listCartTile,
     );

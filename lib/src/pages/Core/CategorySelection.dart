@@ -8,6 +8,8 @@ import 'package:ecommerce_app/src/pages/Core/FruitsPage.dart';
 import 'package:ecommerce_app/src/pages/Core/LegumesPage.dart';
 import 'package:ecommerce_app/src/pages/Core/MedicamentPage.dart';
 import 'package:ecommerce_app/src/pages/Core/ViandePage.dart';
+import 'package:ecommerce_app/src/pages/Core/commandesPage.dart';
+import 'package:ecommerce_app/src/pages/Core/profilPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,22 +26,16 @@ class _CategorySelectionState extends State<CategorySelection> {
   @override
   Widget build(BuildContext context) {
     UserData userData = Provider.of<UserData>(context);
-    List<Product> products = Provider.of<List<Product>>(context);
-    if (products != null) {
-      products.forEach((product) {
-        print(product.name);
-        print(product.category);
-      });
-    }
-
     if (userData == null) return Container(
       color: Colors.white,
     );
     return Scaffold(
       drawer: Drawer(
         child: ListView(
+          padding: EdgeInsets.all(0),
           children: <Widget>[
             DrawerHeader(
+              
               decoration: BoxDecoration(
                 color: Colors.green),
               child: Padding(
@@ -52,37 +48,74 @@ class _CategorySelectionState extends State<CategorySelection> {
                   SizedBox(height: 5,),
                   Text(userData.name, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
                   SizedBox(height: 5,),
-                  Text(userData.email, style: TextStyle(color: Colors.white),),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.mail, color: Colors.white, size: 15,),
+                      SizedBox(width: 5,),
+                      Text(userData.email, style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
                   SizedBox(height: 5,),
-                  Text(userData.phone, style: TextStyle(color: Colors.white),),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.phone, color: Colors.white, size: 15,),
+                      SizedBox(width: 5,),
+                      Text(userData.phone, style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
                 ],
             ),
               )),
             ListTile(
-              onTap: _signOut,
-              leading: Icon(Icons.mail),
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilPage()));
+              },
+              leading: Icon(Icons.person,color: Colors.green,),
               title: Text("Mon Profil"),
 
             ),
+            Divider(indent: 10, endIndent: 10),
             ListTile(
               onTap: (){
+      
                 Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                  CartPage();
+                  return CartPage();
                 }));
               },
-              leading: Icon(Icons.shopping_basket),
-              title: Text("Mon Panier"),
+              leading: Icon(Icons.shopping_basket, color: Colors.orange,),
+              title: Text("Mon Panier",),
               
             ),
+            Divider(indent: 10, endIndent: 10),
+
             ListTile(
-              onTap: _signOut,
-              leading: Icon(Icons.list),
+              onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommandesPage()));
+              },
+              leading: Icon(Icons.list, color: Colors.blue),
               title: Text("Mes commandes"),
               
             ),
+            Divider(indent: 10, endIndent: 10),
+
+            ListTile(
+              onTap: (){},
+              leading: Icon(Icons.info, color: Colors.blueGrey,),
+              title: Text("À propos"),
+              
+            ),
+                        Divider(indent: 10, endIndent: 10),
+
+            ListTile(
+              onTap: (){},
+              leading: Icon(Icons.library_add, color: Colors.brown),
+              title: Text("En savoir plus"),
+              
+            ),
+            Divider(),
             ListTile(
               onTap: _signOut,
-              leading: Icon(Icons.exit_to_app),
+              leading: Icon(Icons.exit_to_app, color: Colors.red),
               title: Text("Se déconnecter"),
             ),
           ],
