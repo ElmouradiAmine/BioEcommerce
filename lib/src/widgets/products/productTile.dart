@@ -13,6 +13,7 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<CartProduct> cartList = Provider.of<List<CartProduct>>(context) ?? [];
     Color color;
     switch (product.category) {
       case "vegetables":
@@ -32,7 +33,14 @@ class ProductTile extends StatelessWidget {
         break;
     }
 
+
     User user = Provider.of<User>(context);
+    addProductToCart(String uid) async {
+    if (cartList.singleWhere((e)
+        => e.idProd == product.id
+    , orElse: () => null) == null)
+      CartService(uid: uid).addProductToCart(product);
+  }
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -92,7 +100,5 @@ class ProductTile extends StatelessWidget {
     );
   }
 
-  addProductToCart(String uid) async {
-    CartService(uid: uid).addProductToCart(product);
-  }
+  
 }

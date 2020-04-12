@@ -44,7 +44,6 @@ class CartService {
   }
 
   Future clearCart() async {
-    DocumentSnapshot doc = await userCollection.document("$uid").get();
     List<Map> cartList = [];
     return await userCollection.document("$uid").updateData({
       "cart": cartList,

@@ -10,10 +10,19 @@ class CommandesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Order> listOrder = Provider.of<List<Order>>(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Mes commandes"),),
-      body: OrderList(listOrder: listOrder,));
+    return Container(
+      decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(
+                  "images/background/vegetablePattern.jpg",
+                ),
+                fit: BoxFit.cover),
+          ),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: Text("Mes commandes"),),
+        body: OrderList(listOrder: listOrder,)),
+    );
   }
 }

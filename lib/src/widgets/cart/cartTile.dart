@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/models/Product.dart';
 import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/services/cartService.dart';
+import 'package:ecommerce_app/services/productService.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class CartTile extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Container(
+                    padding: EdgeInsets.all(12.0),
                     color: Colors.white,
                     child: CachedNetworkImage(
                       imageUrl: product.url,
@@ -122,8 +124,9 @@ class CartTile extends StatelessWidget {
                 ]),
           ),
           GestureDetector(
-            onTap: () {
-              CartService(uid: user.uid).removeProduct(product.id);
+            onTap: () async {
+              await CartService(uid: user.uid).removeProduct(product.id);
+              await ProductService().removeProduct(product.id);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),

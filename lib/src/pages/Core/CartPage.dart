@@ -16,7 +16,8 @@ class _CartPageState extends State<CartPage> {
   int choice1;
   @override
   Widget build(BuildContext context) {
-    List<CartProduct> cartProducts = Provider.of<List<CartProduct>>(context);
+    List<CartProduct> cartProducts =
+        Provider.of<List<CartProduct>>(context) ?? [];
     User user = Provider.of<User>(context);
 
     int calculatePoid() {
@@ -26,108 +27,155 @@ class _CartPageState extends State<CartPage> {
       }
       return total;
     }
-    Future<void>  validerCommandePopup() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Valider commande'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Êtes-vous sûr de vouloir valider votre commande ?'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            color: Colors.green,
-            child: Text('Oui', style: TextStyle(
-              color: Colors.white,
-            ),),
-            onPressed: () {
-              choice1 = 0;
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            color: Colors.grey,
-            child: Text('Annuler', style: TextStyle(
-              color: Colors.white,
-            ),),
-            onPressed: () {
-              choice1 = 1;
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
 
-Future<void>  successCommande() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Votre commande a été validé avec succès!'),
+    Future<void> validerCommandePopup() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Valider commande'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Êtes-vous sûr de vouloir valider votre commande ?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                child: Text(
+                  'Oui',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  choice1 = 0;
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                color: Colors.grey,
+                child: Text(
+                  'Annuler',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  choice1 = 1;
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            color: Colors.green,
-            child: Text('Ok', style: TextStyle(
-              color: Colors.white,
-            ),),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+          );
+        },
       );
-    },
-  );
-}
+    }
 
-
-Future<void>  echecCommande() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('Une erreur lors de la validation de votre commande a eu lieu. Veuillez réessayer plus tard.'),
+    Future<void> successCommande() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Votre commande a été validé avec succès!'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                child: Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            color: Colors.green,
-            child: Text('Ok', style: TextStyle(
-              color: Colors.white,
-            ),),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+          );
+        },
       );
-    },
-  );
-}
+    }
+
+    Future<void> echecCommande() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      'Une erreur lors de la validation de votre commande a eu lieu. Veuillez réessayer plus tard.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                child: Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      
+    }
+
+    Future<void> exceeded() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      'Vous avez dépassé la capacité recommandée.'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.green,
+                child: Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      
+    }
 
     return Stack(
-      
       children: <Widget>[
         Scaffold(
           appBar: AppBar(
@@ -164,7 +212,7 @@ Future<void>  echecCommande() async {
                           blurRadius: 5.0,
                         ),
                       ],
-                      color: Colors.green,
+                      color: calculatePoid() <= 10 ? Colors.green : Colors.red,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -172,7 +220,7 @@ Future<void>  echecCommande() async {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Text(
-                          "Nombre d'articles : ${cartProducts.length}",
+                          "Nombre d'articles : ${cartProducts != null ? cartProducts.length : 0}",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -193,30 +241,37 @@ Future<void>  echecCommande() async {
                   color: Colors.orange,
                   child: InkWell(
                     onTap: () async {
-                      if (cartProducts.length != 0){
-                        await validerCommandePopup();
-                       if (choice1==0){
-                         setState(() {
-                           loading = true;
-                         });
-                         bool success = await OrderService(uid: user.uid).addOrder(cartProducts);
-                         setState(() {
-                           loading = false;
-                         });
-                        if (success){
-                          await successCommande();
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-                            return CommandesPage();
-                          }));
-                        } else {
-                          echecCommande();
+                      if (calculatePoid() <= 10) {
+                        if ((cartProducts != null ? cartProducts.length : 0) !=
+                            0) {
+                          await validerCommandePopup();
+                          if (choice1 == 0) {
+                            setState(() {
+                              loading = true;
+                            });
+                            bool success = await OrderService(uid: user.uid)
+                                .addOrder(cartProducts);
+                            setState(() {
+                              loading = false;
+                            });
+                            if (success) {
+                              await successCommande();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                return CommandesPage();
+                              }));
+                            } else {
+                              echecCommande();
+                            }
+                          }
                         }
-                       }
+                      } else {
+                        exceeded();
                       }
-                       
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical:16.0,horizontal:12.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 12.0),
                       child: Text(
                         "Valider ma commande",
                         textAlign: TextAlign.center,
@@ -234,7 +289,7 @@ Future<void>  echecCommande() async {
         ),
         Visibility(
           visible: loading,
-                  child: Container(
+          child: Container(
             height: double.infinity,
             width: double.infinity,
             color: Colors.black.withOpacity(0.7),
@@ -245,7 +300,5 @@ Future<void>  echecCommande() async {
         )
       ],
     );
-
-    
   }
 }
